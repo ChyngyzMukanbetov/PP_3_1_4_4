@@ -1,0 +1,440 @@
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <title>admin</title>
+    <div class="bg-dark">
+        <div class="container bg-dark">
+            <div class="row">
+                <div class="col-md-10">
+                    <h5 class="m-2 text-light" th:inline="text">Hello Admin with name: [[${#httpServletRequest.remoteUser}]]</h5>
+                </div>
+                <div class="col-md-2" style="">
+                    <a class="btn btn-dark btn-block w-5 btn-lg active justify-content-end flex-row"
+                       href="/logout" style="">LOG OUT</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</head>
+
+<body>
+
+<div class="container">
+    <div class="row">
+        <div class="col-2 sidebar">
+            <h4><a href="/admin/user/" sec:authorize="hasRole('ROLE_USER')">User</a></h4>
+            <h4><a href="#">ADMIN</a></h4>
+        </div>
+        <div class="col-10">
+            <div class="row">
+                <div class="container">
+                    <h2>Admin Panel</h2>
+                </div>
+            </div>
+            <div class="row">
+                <div class="container">
+                    <div class="container">
+                        <button type="button" class="btn btn-outline-secondary">Users Table</button>
+                    </div>
+                </div>
+
+            </div>
+            <div class="row">
+                <div class="container">
+                    <div class="card">
+                        <div class="card-block">
+                            <table id="table" class="table table-striped">
+                                <thead>
+                                <tr>
+                                    <th>id</th>
+                                    <th>username</th>
+                                    <th>age</th>
+                                    <th>role</th>
+                                    <th>EDIT</th>
+                                    <th>DELETE</th>
+                                </tr>
+                                </thead>
+                                <tbody id="body">
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--форма заполнения нового юзера и две кнопки-->
+<!--<div class="container-fluid">-->
+<!--    <div class="d-flex justify-content-center">-->
+
+<!--        <div class="form-group align-items-center">-->
+<!--            <form id="defaultSomeForm" data-hidden=true style="display: none">-->
+<!--                <input class="form-control" id="AddNewUserLogin" type="text" placeholder="login"><br>-->
+<!--                <input class="form-control" id="AddNewUserPassword" type="password" placeholder="password"><br>-->
+<!--                <input class="form-control" id="AddNewUserAge" type="number" placeholder="age"><br>-->
+<!--                <button class="btn btn-primary mb-2" type="button" id="addNewUserButton">Add new user</button>-->
+<!--            </form>-->
+<!--            <div class="p-2">-->
+<!--                <button class="btn btn-outline-success" id="SliderNewUserForm">Show panel</button>-->
+<!--            </div>-->
+<!--        </div>-->
+
+<!--    </div>-->
+<!--</div>-->
+
+<!--скрытое дефолтное модальное окно -->
+<!--<div class="modal fade" id="someDefaultModal" tabindex="-1" role="dialog" aria-labelledby="someDefaultModalLabel" aria-hidden="true">-->
+<!--    <div class="modal-dialog">-->
+<!--        <div class="modal-content">-->
+
+<!--            <div class="modal-header">-->
+<!--                <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>-->
+<!--                <button type="button" class="close" data-dismiss="modal" aria-label="Close">-->
+<!--                    <span aria-hidden="true">&times;</span>-->
+<!--                </button>-->
+<!--            </div>-->
+
+<!--            <div class="modal-body">-->
+<!--            </div>-->
+
+<!--            <div class="modal-footer">-->
+<!--            </div>-->
+
+<!--        </div>-->
+<!--    </div>-->
+<!--</div>-->
+
+<div class="modal fade" id="edittModal" tabindex="-1" role="dialog"
+     aria-labelledby="exampleModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">EDIT</h5>
+                <button type="button" class="close btn btn-danger" data-dismiss="modal"
+                        aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form>
+                <div class="modal-body">
+<!--                    <div class="form-group">-->
+<!--                        <label for="id" th:hidden="id" class="col-form-label">ID</label>-->
+<!--                        <input type="text" th:hidden="id" class="form-control" id="id" name="id"-->
+<!--                               th:value=""/>-->
+<!--                    </div>-->
+<!--                    <div class="form-group">-->
+<!--                        <label for="username" class="col-form-label">username:</label>-->
+<!--                        <input type="text" class="form-control" id="username" name="username"-->
+<!--                               th:value=""/>-->
+<!--                    </div>-->
+<!--                    <div class="form-group">-->
+<!--                        <label for="age" class="col-form-label">age:</label>-->
+<!--                        <input type="number" class="form-control" id="age" name="age"-->
+<!--                               th:value=""/>-->
+<!--                    </div>-->
+<!--                    <div class="form-group">-->
+<!--                        <label for="password" class="col-form-label">password:</label>-->
+<!--                        <input type="text" class="form-control" id="password" name="password"-->
+<!--                               value=""/>-->
+<!--                    </div>-->
+<!--                    <div class="form-group">-->
+<!--                        <label>&ndash;&gt;-->
+<!--                            <select class="custom-select" multiple id="roles3" name="roles3">-->
+<!--                                <option value="ADMIN">ADMIN</option>-->
+<!--                                <option value="USER">USER</option>-->
+<!--                            </select>-->
+<!--                        </label>-->
+<!--                    </div>-->
+<!--                    <div class="modal-footer">-->
+<!--                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close-->
+<!--                        </button>-->
+<!--                        <input type="submit" class="btn btn-primary" id="editBtn" value="edit"/>-->
+<!--                    </div>-->
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js"
+        integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"
+        style=""></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"
+        style=""></script>
+<script
+        src="https://code.jquery.com/jquery-3.4.1.min.js"
+        integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+        crossorigin="anonymous"></script>
+
+
+<script >
+    // <script src="js/app.js">
+
+
+   const tableBody = document.querySelector('#body')
+   let temp = ''
+
+   fetch("http://localhost:8080/admin/rest")
+   .then(res => res.json()
+       .then(users => {
+       users.forEach(user => {
+
+           // console.log(user.username);
+
+           let rolesName = '';
+           user.roles.forEach(role => {
+               rolesName += role.rolename + " ";
+           })
+           // console.log(rolesName);
+
+
+           temp += `<tr>
+                           <td>${user.id}</td>
+                           <td>${user.username}</td>
+                           <td>${user.age}</td>
+                           <td>${rolesName}</td>
+                           <td>
+                               <button type="Button" data-userid="${user.id}" data-action="edit" class="editBtn"
+                               data-toggle="modal" data-target="#edittModal">EDIT</button>
+                           </td>
+                           <td>
+                               <button type="Button" data-userid="${user.id}" data-action="delete" class="btn btn-danger"
+                               data-toggle="modal" data-target="#deleteModal">DELETE</button>
+                           </td>
+                       </tr>`;
+       })
+
+           // class="btn btn-info"
+       tableBody.innerHTML = temp
+           temp = ''
+       })
+   )
+
+    let editModal = document.getElementById('edittModal');
+    let editBtns = document.querySelectorAll('.editBtn');
+
+   editBtns.forEach(btn => {
+        btn.addEventListener('click', (e) => {
+           e.preventDefault();
+           console.log(e.target)
+           // console.log(e.target.dataset.userid);
+           // let userid =
+
+           // temp += `<div className="form-group">
+           //     <label htmlFor="id" th:hidden="id" className="col-form-label">ID</label>
+           //     <input type="text" th:hidden="id" className="form-control" id="id" name="id"
+           //            th:value="#data-userid"/>
+           // </div>
+           //  <div className="form-group">
+           //      <label htmlFor="username" className="col-form-label">username:</label>
+           //      <input type="text" className="form-control" id="username" name="username"
+           //             th:value=""/>
+           //  </div>
+           //  <div className="form-group">
+           //      <label htmlFor="age" className="col-form-label">age:</label>
+           //      <input type="number" className="form-control" id="age" name="age"
+           //             th:value=""/>
+           //  </div>
+           //  <div className="form-group">
+           //      <label htmlFor="password" className="col-form-label">password:</label>
+           //      <input type="text" className="form-control" id="password" name="password"
+           //             value=""/>
+           //  </div>
+           //  <div className="form-group">
+           //      <label>-->
+           //          <select className="custom-select" multiple id="roles3" name="roles3">
+           //              <option value="ADMIN">ADMIN</option>
+           //              <option value="USER">USER</option>
+           //          </select>
+           //      </label>
+           //  </div>
+           //  <div className="modal-footer">
+           //      <button type="button" className="btn btn-secondary" data-dismiss="modal">Close
+           //      </button>
+           //      <input type="submit" className="btn btn-primary" id="editBtn" value="edit"/>
+           //  </div>`;
+
+           // editModal.classList.add('active');
+       })
+   })
+
+
+
+
+
+
+
+
+
+
+
+
+
+    // document.querySelector('#table').find('button').on('click', (event) => {
+    //     let defaultModal = $('#someDefaultModal');
+    //
+    //     let targetButton = $(event.target);
+    //     let buttonUserId = targetButton.attr('data-userid');
+    //     let buttonAction = targetButton.attr('data-action');
+    //
+    //     defaultModal.attr('data-userid', buttonUserId);
+    //     defaultModal.attr('data-action', buttonAction);
+    //     defaultModal.modal('show');
+    // })
+
+    // async function getNewUserForm() {
+    //     let button = $(`#SliderNewUserForm`);
+    //     let form = $(`#defaultSomeForm`)
+    //     button.on('click', () => {
+    //         if (form.attr("data-hidden") === "true") {
+    //             form.attr('data-hidden', 'false');
+    //             form.show();
+    //             button.text('Hide panel');
+    //         } else {
+    //             form.attr('data-hidden', 'true');
+    //             form.hide();
+    //             button.text('Show panel');
+    //         }
+    //     })
+    // }
+
+
+    // что то деалем при открытии модалки и при закрытии
+    // основываясь на ее дата атрибутах
+    // async function getDefaultModal() {
+        $('#someDefaultModal').modal({
+            keyboard: true,
+            backdrop: "static",
+            show: false
+        }).on("show.bs.modal", (event) => {
+            let thisModal = $(event.target);
+            let userid = thisModal.attr('data-userid');
+            let action = thisModal.attr('data-action');
+            switch (action) {
+                case 'edit':
+                    editUser(thisModal, userid);
+                    break;
+                case 'delete':
+                    deleteUser(thisModal, userid);
+                    break;
+            }
+        }).on("hidden.bs.modal", (e) => {
+            let thisModal = $(e.target);
+            thisModal.find('.modal-title').html('');
+            thisModal.find('.modal-body').html('');
+            thisModal.find('.modal-footer').html('');
+        })
+    // }
+
+
+    // редактируем юзера из модалки редактирования, забираем данные, отправляем
+    async function editUser(modal, id) {
+        let preuser = await userFetchService.findOneUser(id);
+        let user = preuser.json();
+
+        modal.find('.modal-title').html('Edit user');
+
+        let editButton = `<button  class="btn btn-outline-success" id="editButton">Edit</button>`;
+        let closeButton = `<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>`
+        modal.find('.modal-footer').append(editButton);
+        modal.find('.modal-footer').append(closeButton);
+
+        user.then(user => {
+            let bodyForm = `
+            <form class="form-group" id="editUser">
+                <input type="text" class="form-control" id="id" name="id" value="${user.id}" disabled><br>
+                <input class="form-control" type="text" id="login" value="${user.username}"><br>
+                <input class="form-control" type="password" id="password"><br>
+                <input class="form-control" id="age" type="number" value="${user.age}">
+            </form>
+        `;
+            modal.find('.modal-body').append(bodyForm);
+        })
+
+        $("#editButton").on('click', async () => {
+            let id = modal.find("#id").val().trim();
+            let login = modal.find("#username").val().trim();
+            let password = modal.find("#password").val().trim();
+            let age = modal.find("#age").val().trim();
+            let data = {
+                id: id,
+                login: login,
+                password: password,
+                age: age
+            }
+            const response = await userFetchService.updateUser(data, id);
+
+            if (response.ok) {
+                getTableWithUsers();
+                modal.modal('hide');
+            } else {
+                let body = await response.json();
+                let alert = `<div class="alert alert-danger alert-dismissible fade show col-12" role="alert" id="sharaBaraMessageError">
+                            ${body.info}
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>`;
+                modal.find('.modal-body').prepend(alert);
+            }
+        })
+    }
+
+
+    // удаляем юзера из модалки удаления
+    async function deleteUser(modal, id) {
+        await userFetchService.deleteUser(id);
+        getTableWithUsers();
+        modal.find('.modal-title').html('');
+        modal.find('.modal-body').html('User was deleted');
+        let closeButton = `<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>`
+        modal.find('.modal-footer').append(closeButton);
+    }
+
+
+
+
+
+
+    async function addNewUser() {
+        $('#addNewUserButton').click(async () =>  {
+            let addUserForm = $('#defaultSomeForm')
+            let login = addUserForm.find('#AddNewUserLogin').val().trim();
+            let password = addUserForm.find('#AddNewUserPassword').val().trim();
+            let age = addUserForm.find('#AddNewUserAge').val().trim();
+            let data = {
+                login: login,
+                password: password,
+                age: age
+            }
+            const response = await userFetchService.addNewUser(data);
+            if (response.ok) {
+                getTableWithUsers();
+                addUserForm.find('#AddNewUserLogin').val('');
+                addUserForm.find('#AddNewUserPassword').val('');
+                addUserForm.find('#AddNewUserAge').val('');
+            } else {
+                let body = await response.json();
+                let alert = `<div class="alert alert-danger alert-dismissible fade show col-12" role="alert" id="sharaBaraMessageError">
+                            ${body.info}
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>`;
+                addUserForm.prepend(alert)
+            }
+        })
+    }
+
+</script>
+
+</body>
+</html>

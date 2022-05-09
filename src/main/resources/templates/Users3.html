@@ -1,0 +1,361 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <title>admin</title>
+
+</head>
+
+<body>
+<div class="bg-dark">
+    <div class="container bg-dark">
+        <div class="row">
+            <div class="col-md-6">
+                <h5 class="m-2 text-light" th:inline="text">Hello user with name
+                    [[${#httpServletRequest.remoteUser}]] </h5>
+            </div>
+            <div class="col-md-6 w-50" style="">
+                <a class="btn btn-dark btn-block w-25 btn-lg active flex-grow-0 d-flex align-items-end justify-content-end flex-row"
+                   href="/logout" style="">LOG OUT</a>
+            </div>
+        </div>
+    </div>
+</div>
+<div>
+    <a class=" btn btn-lg btn-dark btn-block  active flex-grow-0 d-flex align-items-end justify-content-ctr flex-row"
+       href="#" data-toggle="modal" data-target="#modal-add" th:attr="data-target='#modal-add'" style="">ADD</a>
+    <div class="modal modal-warning fade in" th:id="modal-add">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">add User</h5>
+                    <button type="button" class="close btn btn-danger" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span></button>
+
+                </div>
+                <div class="modal-body">
+
+                    <label>
+                        <input class="form-control" type="text" id="nameAdd" placeholder="name">
+                    </label>
+                    <label>
+                        <input class="form-control" type="text" id="passwordAdd" placeholder="password">
+                    </label>
+                    <label>
+                        <input class="form-control" type="number" id="ageAdd" placeholder="age">
+                    </label>
+                    <label>
+                        <input class="form-control" type="text" id="streetAdd" placeholder="street">
+                    </label>
+                    <label><select id="roleAdd" name="roleEdit" class="form-control">
+                        <option selected th:value="'ADMIN'" th:text="ADMIN"></option>
+                        <option th:value="'USER'" th:text="USER"></option>
+                    </select></label>
+
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger pull-left" data-dismiss="modal">Close</button>
+                    <input type="submit" class="btn btn-primary" id="addUser" value="ADD USER">
+                </div>
+            </div>
+        </div>
+        </form>
+    </div>
+</div>
+<!--это начало таблицы и -->
+<div class="py-5">
+    <div class="container">
+        <div class="row">
+            <div class="bg-success w-25 h-100 col-md-3" style="">
+                <h2><a href="/user">User</a></h2>
+                <h2><a href="/admin">ADMIN</a></h2>
+            </div>
+            <div class="py-5">
+                <div class="container">
+                    <div class="row">
+                        <div style="">
+                            <div class="container">
+                                <div class="card">
+                                    <div class="card-block">
+                                        <table class="table table-hover">
+                                            <thead>
+                                            <tr>
+                                                <th scope="col">id</th>
+                                                <th scope="col">name</th>
+                                                <th scope="col">age</th>
+                                                <th scope="col">roles</th>
+                                                <th scope="col">edit</th>
+                                                <th scope="col">delete</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody id="users-table">
+                                            <!--                                заполняется в аяксе-->
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog"
+             aria-labelledby="exampleModalLabel"
+             aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">EDIT</h5>
+                        <button type="button" class="close btn btn-danger" data-dismiss="modal"
+                                aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label for="idEdit" th:hidden="id" class="col-form-label">ID</label>
+                            <input type="text" th:hidden="id" class="form-control" id="idEdit" name="id"
+                                   value=""/>
+                        </div>
+                        <div class="form-group">
+                            <label for="nameEdit" class="col-form-label">username:</label>
+                            <input type="text" class="form-control" id="nameEdit" name="name"
+                                   value=""/>
+                        </div>
+                        <div class="form-group">
+                            <label for="streetEdit" class="col-form-label">street:</label>
+                            <input type="text" class="form-control" id="streetEdit" name="street"
+                                   value=""/>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="ageEdit" class="col-form-label">age:</label>
+                            <input type="number" class="form-control" id="ageEdit" name="age"
+                                   value=""/>
+                        </div>
+                        <div class="form-group">
+                            <label for="passwordEdit" class="col-form-label">password:</label>
+                            <input type="text" class="form-control" id="passwordEdit" name="password"
+                                   value=""/>
+                        </div>
+                        <div class="form-group">
+                            <label for="roleEdit"><select id="roleEdit" name="roleEdit" class="form-control">
+                                <option th:value="'ADMIN'" th:text="ADMIN"></option>
+                                <option th:value="'USER'" th:text="USER"></option>
+                            </select></label>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close
+                        </button>
+                        <input type="submit" class="btn btn-primary" value="edit"/>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+
+
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js"
+        integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"
+        style=""></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"
+        style=""></script>
+<script>
+    //get all users
+    getAllUsers();
+
+    //функция получения всех юзеров
+    function getAllUsers() {
+        alert("value");
+
+        $.getJSON("http://localhost:8080/admin/rest")
+            .then(res => res.json())
+            .then(users => {
+                users.forEach(user => {
+                    let tableFilling = `$(
+                        <tr>
+                            <td>${user.id}</td>
+                            <td>${user.username}</td>
+                            <td>${user.age}</td>
+                            <td>${user.roles}</td>
+                            <td>
+                                <button type="button" data-userid="${user.id}" data-action="edit" class="btn btn-outline-secondary"
+                                data-toggle="modal" data-target="#someDefaultModal"></button>
+                            </td>
+                            <td>
+                                <button type="button" data-userid="${user.id}" data-action="delete" class="btn btn-outline-danger"
+                                data-toggle="modal" data-target="#someDefaultModal"></button>
+                            </td>
+                        </tr>
+                )`;
+                    $('#users-table').append(tableFilling);
+                })
+
+        $.getJSON("http://localhost:8080/admin/rest", function (data) {
+            alert("asd");
+
+            console.log(data);
+
+            let userRow = '';
+            let userId = '';
+            $.each(data, function (key, value) {
+                userRow += '<tr>';
+                    userRow += '<td>' + value.id + '</td>';
+                    userId = value.id;
+                if (key === "id") {
+                    userRow += '<tr>';
+                    userRow += '<td>' + value.id + '</td>';
+                    userId = value.id;
+                    console.log(userRow);
+                }
+                if (key === "username") {
+                    userRow += '<td>' + value.username + '</td>';
+                }
+
+                if (key === "age") {
+                    userRow += '<td>' + value.age + '</td>';
+                }
+
+                if (key === "roles") {
+                    let roles = value.roles;
+                    let roleName = '';
+                    $.each(roles, function (key1, value1) {
+                        if (key1 === "rolename") {
+                            roleName += value1.rolename;
+                        }
+                    });
+                    userRow += '<td>' + roleName + '</td>';}
+                    userRow += '<td><a class="btn btn-primary" id="btnEditUser' + value.id + '" data-toggle="modal" data-target=".bd-example-modal-md" onclick="editUser(' + value.id + ')" role="button">Edit</a></td>';
+                    userRow += '<td><a class="btn btn-primary" id="btnDeleteUser" onclick="deleteUser(' + value.id + ')" role="button">Delete</a>' + '</td>';
+                    userRow += '</tr>';
+
+                $('#users-table').append(userRow);
+            });
+
+        });
+    }
+
+    // add user
+    $('#addUser').click(function () {
+        let user = {};
+        user.username = $('#nameAdd').val();
+        user.password = $('#passwordAdd').val();
+        user.age = $('#ageAdd').val();
+        user.roles = getCheckedRoles(); //$('#roleAdd').val();//
+        $.ajax({
+            url: 'http://localhost:8080/admin/add',
+            method: 'POST',
+            data: JSON.stringify(user),
+            contentType: 'application/json; charset=utf-8',
+            success: function () {
+                //очищаем форму Add
+                $('#nameAdd').val('');
+                $('#passwordAdd').val('');
+                $('#ageAdd').val('');
+
+                let table = $('#users-table');
+                table.empty();
+                $('#modal-add').modal('close');
+                $('#nav-allusers-tab').tab('show');
+                getAllUsers();
+
+            },
+            error: function (error) {
+                alert("error Add: " + error);
+            }
+        });
+    });
+
+    //GET edit user
+    function editUser(id) {
+        $.ajax({
+            url: "http://localhost:8080/admin/findUser/" + id,
+            method: "GET",
+            success: function (editData) {
+                $('#modal-title').text('Edit User: ' + editData.username);
+                $('#idEdit').val(editData.id);
+                $('#nameEdit').val(editData.username);
+                $('#ageEdit').val(editData.age);
+                let emptyPassword = '';
+                $('#modalEditNewPassword').val(emptyPassword);
+
+                //  var editUserString = JSON.stringify(editData);
+            }, error: function (error) {
+                alert(error);
+            }
+
+        });
+    }
+
+    // edit Post
+    $('#btnSaveEdit').click(function () {
+        let edit = {};
+        edit.id = $('#idEdit').val();
+        edit.name = $('#nameEdit').val();
+        edit.age = $('#ageEdit').val();
+        edit.password = $('#modalEditNewPassword').val();
+        edit.roles = getCheckedRoles();
+        $.ajax({
+            url: 'http://localhost:8080/admin/edit',
+            data: JSON.stringify(edit),
+            method: 'POST',
+            contentType: 'application/json; charset=utf-8',
+            success: function () {
+                let table = $('#users-table');
+                table.empty();
+                $('#exampleModal').modal('hide');
+                $('#nav-allusers-tab').tab('show');
+                getAllUsers();
+            }
+        })
+    });
+
+    // //DELETE user
+    function deleteUser(id) {
+        $.ajax({
+            url: 'http://localhost:8080/admin/delete/' + id,
+            method: 'GET',
+            success: function () {
+                //стираем таблицу и заново отображаем всех юзеров
+                let table = $('#table');
+                table.empty();
+                getAllUsers();
+            },
+            error: function (error) {
+                alert(error);
+            }
+        })
+    }
+
+
+    function getCheckedRoles() {
+        let verseChoose = document.querySelector('select').getAttribute('id');
+        let singleValues = verseChoose === "#roleEdit" ? $("#roleAdd").val() : $("#roleEdit").val();
+        let roles = [];
+        let role = {};
+        if (singleValues === "ADMIN") {
+            role.id = "1";
+        } else if (singleValues === "USER") {
+            role.id = "2";
+        }
+        roles.push(role);
+        return roles;
+    }
+</script>
+
+</body>
+</html>
