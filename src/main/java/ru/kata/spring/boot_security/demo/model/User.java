@@ -29,6 +29,8 @@ public class User implements UserDetails {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String username;
+    private String lastname;
+    private String email;
     private Byte age;
     private String password;
     private boolean active = true;
@@ -59,6 +61,11 @@ public class User implements UserDetails {
     public String getUsername() {
         return username;
     }
+
+//    @Override
+//    public String getUsername() {
+//        return email;
+//    }
 
     @Override
     public boolean isAccountNonExpired() {

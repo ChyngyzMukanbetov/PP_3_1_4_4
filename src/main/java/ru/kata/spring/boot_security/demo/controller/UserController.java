@@ -27,7 +27,7 @@ public class UserController {
 
     @GetMapping(value = "")
     public String getAllUsers(Model model, Principal principal) {
-        User user = userService.allUsers().stream().filter(u -> u.getUsername().equals(principal.getName())).findFirst().get();
+        User user = userService.allUsers().stream().filter(u -> u.getEmail().equals(principal.getName())).findFirst().get();
         model.addAttribute("user", user);
         return "User";
     }

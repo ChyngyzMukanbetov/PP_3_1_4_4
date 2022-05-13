@@ -41,7 +41,11 @@ public class AdminController {
 //    }
 
     @GetMapping()
-    public String adminPage(Model model) {
+    public String adminPage(Model model, Principal principal) {
+        User user = userService.allUsers().stream().filter(u -> u.getEmail().equals(principal.getName())).findFirst().get();
+//        String principalRoles = user.getRoles().toString();
+        model.addAttribute("user", user);
+//        model.addAttribute("principalRoles", principalRoles);
         return "admin";
     }
 
@@ -136,7 +140,7 @@ public class AdminController {
 
     @GetMapping(value = "/user")
     public String getUser(Model model, Principal principal) {
-        User user = userService.allUsers().stream().filter(u -> u.getUsername().equals(principal.getName())).findFirst().get();
+        User user = userService.allUsers().stream().filter(u -> u.getEmail().equals(principal.getName())).findFirst().get();
         model.addAttribute("user", user);
         return "AdminUser";
     }
